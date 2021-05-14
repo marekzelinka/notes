@@ -4,10 +4,13 @@ import NoteList from './NoteList'
 import NoteItem from './NoteItem'
 import AddNote from './AddNote'
 import noteService from 'services/notes'
+import Notification from './Notification'
+import Footer from './Footer'
 
 const App = () => {
   const [notes, setNotes] = useState([])
   const [showAll, setShowAll] = useState(true)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     noteService.getAll().then((initialNotes) => setNotes(initialNotes))
@@ -39,7 +42,10 @@ const App = () => {
         )
       )
       .catch(() => {
-        alert(`the note '${note.content}' was already deleted from server`)
+        setErrorMessage(
+          `Note '${note.content}' was already removed from server'`
+        )
+        setTimeout(() => setErrorMessage(null), 5000)
         setNotes((notes) => notes.filter((note) => note.id !== id))
       })
   }
@@ -47,6 +53,7 @@ const App = () => {
   return (
     <div>
       <h1>Notes</h1>
+      <Notification message={errorMessage} />
       <Filter
         value={showAll}
         onClick={() => setShowAll((showAll) => !showAll)}
@@ -58,6 +65,7 @@ const App = () => {
         )}
       />
       <AddNote onSubmit={addNote} />
+      <Footer />
     </div>
   )
 }
