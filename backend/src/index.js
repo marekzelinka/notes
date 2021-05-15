@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 
 let notes = [
   {
@@ -29,6 +30,7 @@ const generateId = () => {
 const app = express()
 
 app.use(express.json())
+app.use(cors())
 
 const reqLogger = (req, _res, next) => {
   console.log('Method:', req.method)
