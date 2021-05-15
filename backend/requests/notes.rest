@@ -1,0 +1,16 @@
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+    "content": "REST client is a good VSCode extension",
+    "important": true
+}
+
+###
+GET http://localhost:3001/api/notes
+
+###
+GET http://localhost:3001/api/notes/4
+
+###
+DELETE http://localhost:3001/api/notes/4
