@@ -30,6 +30,16 @@ const app = express()
 
 app.use(express.json())
 
+const reqLogger = (req, _res, next) => {
+  console.log('Method:', req.method)
+  console.log('Path:', req.path)
+  console.log('Body:', req.body)
+  console.log('---')
+  next()
+}
+
+app.use(reqLogger)
+
 app.get('/', (_req, res) => res.send('<h1>Hello world</h1>'))
 
 app.post('/api/notes', (req, res) => {
@@ -68,6 +78,12 @@ app.delete('/api/notes/:id', (req, res) => {
   notes = notes.filter((note) => note.id !== Number(req.params.id))
   res.status(204).end()
 })
+
+const unknowEndpoint = (_req, res) => {
+  res.status(404).json({ error: 'unknown endpoint' })
+}
+
+app.use(unknowEndpoint)
 
 const PORT = 3001
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
